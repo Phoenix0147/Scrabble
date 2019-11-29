@@ -1,0 +1,378 @@
+html {
+  scroll-behavior: smooth;
+}
+#b{
+    background-image:url("../assets/backgrounds/frontPage.png");
+    height: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position:center;
+}
+.li1{
+    background-color: rgba(0,0,0,0);
+    padding-top: 5px;
+    border: 0px;
+}
+.navbar{
+    background-color: rgba(44, 62, 80,1);
+    border-bottom-left-radius:45px;
+    border-bottom-right-radius:45px;
+    color: white;
+    vertical-align: center;
+}
+ li{
+    padding-left:10px;
+    text-align: right;
+    padding-right:10px;
+}
+
+#btn{
+    background-color: rgba(191, 201, 202 ,.3);
+    border-radius: 0px;
+    position:absolute;
+    top: 400px;
+    left: 630px;
+    border: 2px solid #FEFFFF;
+}
+#s{
+   font-family: 'Annie Use Your Telescope', cursive;
+}
+#position{
+    position: absolute;
+    left: 400px;
+    top: 200px;
+
+    background-color:rgba(0,0,0,.0);
+    color:white;
+    /* border: 2px solid black;
+     border-left:7px solid #117A65; */
+}
+#b2{
+    border-radius: 5px;
+    background-color: rgba(250, 215, 160  ,.5);
+    border:1px solid black;
+    position: absolute;
+    top: 290px;
+    left: 245px;
+
+}
+#d2{
+    background-color:rgba(0,0,0,.5);
+    position: relative;
+    color: aliceblue;
+    top: 500px;
+}
+
+#modal1{
+    background-color:rgba(253, 235, 208,.5);
+    color:black;
+}
+#p2{
+    position: relative;
+    height: 10pz;
+    top: 500px;
+    background-color: rgba(250, 219, 216  ,.5);
+}
+.fa {
+  padding: 20px;
+  font-size: 25px;
+  width: 50px;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Add a hover effect if you want */
+.fa:hover {
+  opacity:0.5;
+}
+
+
+#col{
+    position: absolute;
+    color:black;
+    font-weight: 100;
+    /* padding: 70px; */
+    top: 500px;
+    padding: 70px;
+}
+
+#about{
+background-color: rgba(253, 254, 254,.5);
+/* margin-left: -10px; */
+font-weight: 500;
+color:black;
+text-align: center;
+}
+
+#how{
+    background-color:rgba(0,0,0,.5);
+    color: white;
+    /* font-weight: 500; */
+    text-align: center;
+}
+#login{
+    text-align: center;
+    position:absolute;
+    top: 1200px;
+}
+#log{
+    background-color: rgba(191, 201, 202,.7);
+    position: relative;
+    color:black;
+    font-weight: 800px;
+    /* left: 60px;
+    right: auto; */
+    top: 30px;
+}
+.ml15 {
+  font-weight: 800;
+  font-size: 3.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+}
+
+.ml15 .word {
+  display: inline-block;
+  line-height: 1em;
+}
+#sign{
+    color:black;
+    text-decoration: underline;
+    font-weight: 500px;
+    font-size: 20px;
+       font-family: 'Annie Use Your Telescope', cursive;
+}
+#log{
+    text-align: center;
+
+}
+#btn1{
+}
+
+.i{
+transition: transform .5s ease-in-out 1s;
+}
+.i:hover{
+  box-shadow: 0 0 1000px black;
+  transform: rotate(360deg);
+}
+
+.im{
+  transition: transform .1s ease-in-out;
+}
+
+.im:hover{
+  transform: scale(2.1);
+  box-shadow: 0 0 15px black;
+  transform:  rotate(-360deg) ;
+}
+
+
+        #contain {
+            width: 100%;
+            height: 700px;
+            -webkit-perspective: 2500;
+            /* For compatibility with iPhone 3.0, we leave off the units here */
+            -webkit-perspective-origin: 50% 225px;
+        }
+
+        #stage {
+            width: 100%;
+            height: 100%;
+            -webkit-transition: -webkit-transform 2s;
+            -webkit-transform-style: preserve-3d;
+        }
+
+        #shape {
+            position: relative;
+            top: -30px;
+            left: 190px;
+            margin: 0 auto;
+            height: 200px;
+            width: 200px;
+            -webkit-transform-style: preserve-3d;
+        }
+
+        .plane {
+            position: absolute;
+            top: -90px;
+            height: 200px;
+            width: 200px;
+            border: 1px solid white;
+            -webkit-border-radius: 12px;
+            -webkit-box-sizing: border-box;
+            text-align: center;
+            font-family: Times, serif;
+            font-size: 124pt;
+            color: black;
+            background-color: rgba(255, 255, 255, 0.6);
+            -webkit-transition: -webkit-transform 2s, opacity 2s;
+            -webkit-backface-visibility: hidden;
+        }
+
+        #shape.backfaces .plane {
+            -webkit-backface-visibility: visible;
+        }
+
+        #shape {
+            -webkit-animation: spin 8s infinite linear;
+        }
+
+        @-webkit-keyframes spin {
+            from {
+                -webkit-transform: rotateY(0);
+            }
+
+            to {
+                -webkit-transform: rotateY(-360deg);
+            }
+        }
+
+        /* ---------- cube styles ------------- */
+        .cube>.nine {
+            opacity: 0.5;
+            -webkit-transform: scale3d(1,1,1) rotateX(90deg) translateZ(100px);
+        }
+
+        .cube>.two {
+            opacity: 0.5;
+            -webkit-transform: scale3d(1,1,1) translateZ(100px);
+        }
+
+        .cube>.three {
+            opacity: 0.5;
+            -webkit-transform: scale3d(1,1,1) rotateY(90deg) translateZ(100px);
+        }
+
+        .cube>.four {
+            opacity: 0.5;
+            -webkit-transform: scale3d(1, 1, 1) rotateY(180deg) translateZ(100px);
+        }
+
+        .cube>.five {
+            opacity: 0.5;
+            -webkit-transform: scale3d(1,1,1) rotateY(-90deg) translateZ(100px);
+        }
+
+        .cube>.six {
+            opacity: 0.5;
+            -webkit-transform: scale3d(1,1,1) rotateX(-90deg) translateZ(100px) rotate(180deg);
+        }
+
+
+        .cube>.seven {
+            -webkit-transform: scale3d(0.6, 0.6, 0.6) rotateX(90deg) translateZ(100px) rotate(180deg);
+        }
+
+        .cube>.eight {
+            -webkit-transform: scale3d(0.6, 0.6, 0.6) translateZ(100px);
+        }
+
+        .cube>.one {
+            -webkit-transform: scale3d(0.6, 0.6, 0.6) rotateY(90deg) translateZ(100px);
+        }
+
+        .cube>.ten {
+            -webkit-transform: scale3d(0.6, 0.6, 0.6) rotateY(180deg) translateZ(100px);
+        }
+
+        .cube>.eleven {
+            -webkit-transform: scale3d(0.6, 0.6, 0.6) rotateY(-90deg) translateZ(100px);
+        }
+
+        .cube>.twelve {
+            -webkit-transform: scale3d(0.6, 0.6, 0.6) rotateX(-90deg) translateZ(100px);
+        }
+
+        /* ---------- ring styles ------------- */
+        .ring>.one {
+            -webkit-transform: scale3d(.6,.6,.6) translateZ(380px);
+        }
+
+        .ring>.two {
+            -webkit-transform: scale3d(.6,.6,.6) rotateY(30deg) translateZ(380px);
+        }
+
+        .ring>.three {
+            -webkit-transform: scale3d(.6,.6,.6) rotateY(60deg) translateZ(380px);
+        }
+
+        .ring>.four {
+            -webkit-transform:scale3d(.6,.6,.6) rotateY(90deg) translateZ(380px);
+        }
+
+        .ring>.five {
+            -webkit-transform: scale3d(.6,.6,.6) rotateY(120deg) translateZ(380px);
+        }
+
+        .ring>.six {
+            -webkit-transform:scale3d(.6,.6,.6) rotateY(150deg) translateZ(380px);
+        }
+
+        .ring>.seven {
+            -webkit-transform:scale3d(.6,.6,.6) rotateY(180deg) translateZ(380px);
+        }
+
+        .ring>.eight {
+            -webkit-transform: scale3d(.6,.6,.6) rotateY(210deg) translateZ(380px);
+        }
+
+        .ring>.nine {
+            -webkit-transform: scale3d(.6,.6,.6) rotateY(-120deg) translateZ(380px);
+        }
+
+        .ring>.ten {
+            -webkit-transform: scale3d(.6,.6,.6) rotateY(-90deg) translateZ(380px);
+        }
+
+        .ring>.eleven {
+            -webkit-transform: scale3d(.6,.6,.6) rotateY(300deg) translateZ(380px);
+        }
+
+        .ring>.twelve {
+            -webkit-transform: scale3d(.6,.6,.6) rotateY(330deg) translateZ(380px);
+        }
+
+        .controls {
+            width: 80%;
+            margin: 0 auto;
+            padding: 5px 20px;
+            -webkit-border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .controls>div {
+            margin: 10px;
+        }
+
+        #btn2{
+          position: absolute;
+          top: -100px;
+          border:6px solid white;
+          font-size: 18px;
+          font-weight: bold;
+          background-color: rgba(255,255,255,.5);
+          height: 80px;
+          width: 160px;
+          left: 1250px;
+          font-family: 'Special Elite', cursive;
+          color: #FEFFFF;
+          /* -webkit-text-stroke: 1px #522e1f; */
+        }
+#btn2:active
+{
+  height: 60px;
+  width: 120px;
+  font-size: 13px;
+}
+#Scrabble
+{
+  font-family: 'Amatic SC', cursive;
+  font-size: 30px;
+  margin-top: 0px;
+}
+#inputEmail4,#inputPassword4
+{
+  font-family: 'PT Mono', monospace;
+}

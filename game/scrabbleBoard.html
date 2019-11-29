@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<head>
+	<title>Game</title>
+	<link rel="stylesheet" href="Style.css">
+	<link href="https://fonts.googleapis.com/css?family=Yatra+One&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Amatic+SC&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Raleway+Dots&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Orbitron&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Quantico&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Special+Elite&display=swap" rel="stylesheet">
+
+
+
+	<script type = "text/javascript">
+		var m = 15;
+		var n = 15;
+
+		var x, y;
+		var currentCell = "";
+		var currentLetter = "";
+		var horizontalWord = "", verticalWord = "";
+
+		var currentPlayer = 0;
+
+		var lettersLeft = "AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLLMMNNNNNNOOOOOOOOPPQRRRRRRSSSSTTTTTTUUUUVVWWXYYZ";
+
+		var letterScores = {'A':1, 'B':3, 'C':3,'D':2, 'E':1, 'F':4, 'G':2, 'H':4,
+				'I':1, 'J':8, 'K':5, 'L':1, 'M':3, 'N':1, 'O':1, 'P':3, 'Q':10, 'R':1,
+				'S':1, 'T':1, 'U':1, 'V':4, 'W':4, 'X':8, 'Y':4, 'Z':10};
+
+		var playerLetters = [[], []];
+		var playerScores = [0, 0];
+
+		function drop(event) {
+			console.log("drop");
+			event.preventDefault();
+			var data = event.dataTransfer.getData("text");
+			var cell = event.target;
+
+			cell.value = data;
+			cell.blur();
+
+			[x, y] = cell.id.split(" ").map(Number);
+			currentCell = cell;
+			currentLetter = cell.value;
+
+			getWords();
+		}
+
+		function allowDrop(event) {
+			event.preventDefault();
+		}
+
+		function dragBegin(event) {
+			event.dataTransfer.setData("text", event.target.value);
+		}
+
+		function initializeBoard() {
+			var table = document.getElementById("board");
+			var row, htmlCode;
+
+			for(var i = 0;i < m;i++) {
+				row = table.insertRow(i);
+
+				for(var j = 0;j < n;j++) {
+					htmlCode =
+					`<input type = "text" id = "${i} ${j}" class="block"
+					oninput = "checkInput(this)"
+					onblur = "getWords()" ondrop = "drop(event)"; ondragover = "allowDrop(event)"
+					value = "">`;
+
+					row.insertCell(j).innerHTML = htmlCode;
+				}
+			}
+
+			var table = document.getElementById("player1");
+			var row, htmlCode;
+
+			for(var i = 0;i < 7;i++) {
+				row = table.insertRow(i);
+				htmlCode =
+					`<input type = "button" draggable = "true" ondragstart = "dragBegin(event)" id = "p0${i}">`;
+
+				row.insertCell(0).innerHTML = htmlCode;
+			}
+
+			var table = document.getElementById("player2");
+			var row, htmlCode;
+
+			for(var i = 0;i < 7;i++) {
+				row = table.insertRow(i);
+				htmlCode =
+					`<input type = "button" draggable = "false" ondragstart = "dragBegin(event)" id = "p1${i}">`;
+
+				row.insertCell(0).innerHTML = htmlCode;
+			}
+
+			assignLetters(0);
+			assignLetters(1);
+
+			document.getElementById(`s0`).value = 0;
+			document.getElementById(`s1`).value = 0;
+		}
+
+		function invert(player) {
+			for(var i = 0;i < 7;i++) {
+				var cell = document.getElementById(`p${player}${i}`);
+				cell.setAttribute('draggable', !cell.draggable);
+			}
+		}
+
+		function swapPlayer() {
+			document.getElementById(`s${currentPlayer}`).value = playerScores[currentPlayer];
+
+			invert(currentPlayer);
+			currentPlayer = (currentPlayer + 1) % 2;
+			invert(currentPlayer);
+		}
+
+		function assignLetters(player) {
+			var n = 7 - playerLetters[player].length;
+
+			for(var i = 0;i < n;i++) {
+				if(lettersLeft.length == 0)
+					break;
+
+				var index = Math.floor(Math.random() * lettersLeft.length);
+				var letter = lettersLeft[index];
+
+				playerLetters[player].push(letter);
+				lettersLeft = lettersLeft.replace(letter, '');
+			}
+
+			for(var i = 0;i < 7;i++) {
+				var button = document.getElementById(`p${player}${i}`);
+				button.value = playerLetters[player][i];
+			}
+		}
+
+		function checkInput(cell) {
+			var contents = cell.value;
+			var n = contents.length;
+
+			if(contents.match(/[A-Za-z]$/))
+				cell.value = contents[n - 1].toUpperCase();
+
+			else if(contents.match(/^[A-Z]/))
+				cell.value = contents[0];
+
+			else
+				cell.value = "";
+
+			if(!playerLetters[currentPlayer].includes(cell.value)) {
+				if(n <= 1)
+					cell.value = "";
+				else
+					cell.value = contents[0];
+			}
+
+			[x, y] = cell.id.split(" ").map(Number);
+			currentCell = cell;
+			currentLetter = cell.value;
+		}
+
+		function continueTurn(cell) {
+			if(cell != "" && cell.value.length > 0) {
+				cell.disabled = true;
+				cell.ondrop = function(event) {	};
+
+				var letters = playerLetters[currentPlayer];
+				letters.splice(letters.indexOf(cell.value), 1);
+
+				assignLetters(currentPlayer);
+
+				swapPlayer();
+
+				currentCell = "";
+			}
+		}
+
+		function getLetterAt(i, j) {
+			return document.getElementById(`${i} ${j}`).value;
+		}
+
+		function getHorizontalWord() {
+			var word = currentLetter;
+
+			for(var i = y - 1;i >= 0;i--) {
+				var letter = getLetterAt(x, i);
+				if(letter.length > 0)
+					word = letter + word;
+				else
+					break;
+			}
+
+			for(var i = y + 1; i < n; i++) {
+				var letter = getLetterAt(x, i);
+				if(letter.length > 0)
+					word = word + letter;
+				else
+					break;
+			}
+
+			horizontalWord = word.toLowerCase();
+		}
+
+		function getVerticalWord() {
+			var word = currentLetter;
+
+			for(var i = x - 1;i >= 0;i--) {
+				var letter = getLetterAt(i, y);
+				if(letter.length > 0)
+					word = letter + word;
+				else
+					break;
+			}
+
+			for(var i = x + 1; i < m; i++) {
+				var letter = getLetterAt(i, y);
+				if(letter.length > 0)
+					word = word + letter;
+				else
+					break;
+			}
+
+			verticalWord = word.toLowerCase();
+		}
+
+		function getScore(word) {
+			var score = 0;
+			for(var i = 0;i < word.length;i++)
+				score += letterScores[word[i].toUpperCase()];
+
+			return score;
+		}
+
+		function getWords() {
+			if(currentCell == "" || currentCell.value == "")
+				currentCell = "";
+
+			else {
+				horizontalWord = "";
+				getHorizontalWord();
+				//console.log(`${horizontalWord}: ${horizontalWord.length}`);
+
+				verticalWord = "";
+				getVerticalWord();
+				//console.log(`${verticalWord}: ${verticalWord.length}`);
+
+				if(horizontalWord.length > 1 || verticalWord.length > 1) {
+					sendWordsToPHP();
+				}
+				else
+					continueTurn(currentCell);
+			}
+		}
+
+		function sendWordsToPHP() {
+			var xhr = new XMLHttpRequest();
+			var url = "serverSide.php"
+			var params = `h=${horizontalWord}&v=${verticalWord}`;
+			console.log(params);
+			xhr.open("POST", url, true);
+
+			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+			xhr.onreadystatechange = function() {
+				if(this.readyState == 4 && this.status == 200) {
+					var resp = this.responseText;
+					var isValid = parseResponse(resp);
+
+					if(isValid)
+						continueTurn(currentCell);
+
+					else {
+						var cell = document.getElementById(`${x} ${y}`);
+						cell.value = "";
+					}
+				}
+			};
+
+			xhr.send(params);
+		}
+
+		function parseResponse(response) {
+			console.log(`response: ${response}`);
+			response = parseInt(response);
+
+			if(response > 0) {
+				if(response & 2) {
+					playerScores[currentPlayer] += getScore(horizontalWord);
+					console.log(playerScores[currentPlayer]);
+				}
+				else if(response & 1)
+					console.log(`Horizontal: ${horizontalWord} found as a substring`);
+
+				if(response & 8) {
+					playerScores[currentPlayer] += getScore(verticalWord);
+					console.log(playerScores[currentPlayer]);
+				}
+				else if(response & 4)
+					console.log(`Vertical: ${verticalWord} found as a substring`);
+
+				return true;
+			}
+
+			else {
+				console.log("Invalid letter");
+				return false;
+			}
+		}
+	</script>
+</head>
+
+<body onload = "initializeBoard()">
+	<div id="particles-js"></div>
+	<script type="text/javascript" src="../particles file/particles.js"></script>
+	<script type="text/javascript" src="../particles file/app.js"></script>
+
+	</script>
+	<script src="https://cdn.rawgit.com/progers/pathseg/master/pathseg.js"></script>
+	<center>
+		<h1 class="display-2" id="scrabble">SCRABBLE</h1>
+		<table id = "screen" width = "100%">
+			<tr>
+				<td><table id = "player1" align = "center" width = "25%"></table></td>
+				<td rowspan = "2"><table id = "board" align = "center" width = "50%"></table></td>
+				<td><table id = "player2" align = "center" width = "25%"></table></td>
+			</tr>
+			<tr>
+				<td align = "center"><input type = "button"  id = "s0" value = "0"></td>
+				<td align = "center"><input type = "button"  id = "s1" value = "0"></td>
+			</tr>
+			<tr>
+				<td colspan = "3">
+					<br>
+					<center>
+					<input type = "button" id = "passTurn" value = "Pass Turn" onclick = "swapPlayer()">
+					</center>
+				</td>
+			</tr>
+		</table>
+	</center>
+</body>
+
+</html>

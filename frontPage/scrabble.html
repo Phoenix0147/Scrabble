@@ -1,0 +1,254 @@
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <link href="https://fonts.googleapis.com/css?family=Annie+Use+Your+Telescope|Encode+Sans|Special+Elite&display=swap"
+          rel="stylesheet">
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+              integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+              crossorigin="anonymous"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+              integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+              crossorigin="anonymous"></script>
+          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+              integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+              crossorigin="anonymous"></script>
+              <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+              <link rel="stylesheet" href="scrabble.css">
+        <link href="https://fonts.googleapis.com/css?family=Special+Elite&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=PT+Mono&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Amatic+SC&display=swap" rel="stylesheet">
+        <script src="scrabble.js"></script>
+        <title>
+            Scrabble game
+        </title>
+        <script type="text/javascript" charset="utf-8">
+            function hasClassName(inElement, inClassName) {
+                var regExp = new RegExp('(?:^|\\s+)' + inClassName + '(?:\\s+|$)');
+                return regExp.test(inElement.className);
+            }
+
+            function addClassName(inElement, inClassName) {
+                if (!hasClassName(inElement, inClassName))
+                    inElement.className = [inElement.className, inClassName].join(' ');
+            }
+
+            function removeClassName(inElement, inClassName) {
+                if (hasClassName(inElement, inClassName)) {
+                    var regExp = new RegExp('(?:^|\\s+)' + inClassName + '(?:\\s+|$)', 'g');
+                    var curClasses = inElement.className;
+                    inElement.className = curClasses.replace(regExp, ' ');
+                }
+            }
+
+            function toggleClassName(inElement, inClassName) {
+                if (hasClassName(inElement, inClassName))
+                    removeClassName(inElement, inClassName);
+                else
+                    addClassName(inElement, inClassName);
+            }
+
+            function toggleShape() {
+                var shape = document.getElementById('shape');
+                if (hasClassName(shape, 'ring')) {
+                    removeClassName(shape, 'ring');
+                    addClassName(shape, 'cube');
+                } else {
+                    removeClassName(shape, 'cube');
+                    addClassName(shape, 'ring');
+                }
+
+                // Move the ring back in Z so it's not so in-your-face.
+                var stage = document.getElementById('stage');
+                if (hasClassName(shape, 'ring'))
+                    stage.style.webkitTransform = 'translateZ(-200px)';
+                else
+                    stage.style.webkitTransform = '';
+            }
+
+            function toggleBackfaces() {
+                var backfacesVisible = document.getElementById('backfaces').checked;
+                var shape = document.getElementById('shape');
+                if (backfacesVisible)
+                    addClassName(shape, 'backfaces');
+                else
+                    removeClassName(shape, 'backfaces');
+            }
+
+            function sendDataToPHP() {
+              var eid = document.getElementById("inputEmail4").value;
+              var pwd = document.getElementById("inputPassword4").value;
+
+        			var xhr = new XMLHttpRequest();
+        			var url = "login.php"
+        			var params = `eid=${eid}&pwd=${pwd}`;
+        			console.log(params);
+        			xhr.open("POST", url, true);
+
+        			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        			xhr.onreadystatechange = function() {
+        				if(this.readyState == 4 && this.status == 200) {
+        					var loggedIn = parseInt(this.responseText);
+
+        					if(loggedIn == 1)
+                    {
+                      console.log("Yay!");
+                      window.location="../game/scrabbleBoard.html";
+                    }
+
+        					else
+                  {
+                    console.log("Nay!");
+                    alert("Login Failed");
+    				      }
+                }
+        			};
+
+        			xhr.send(params);
+        		}
+
+        </script>
+    </head>
+    <body id="b">
+    <!-- Image and text -->
+    <nav class="mb-1 navbar navbar-expand-lg navbar-dark info-color">
+
+        <a class=" px-5 navbar-brand" id="Scrabble" href="scrabble.html">Scrabble</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4"
+            aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#log"> Login
+                        <!-- <span class="sr-only">(current)</span> -->
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../signUp/sign.html">
+                  Sign Up</a>
+                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../aboutCreators/credits.html">
+                   About Creator</a>
+            </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+    <div class="jumbotron jumbotron-fluid " align="center" id="position">
+        <div class="container">
+           <!-- <strong><h1 class="displ ay-1" id="s">Scrabble</h1> -->
+
+        <!-- <div class="ro">
+            <img id="i" src="S.png" class="i"  width="80px" height="80px"></a>
+            <img src="C.png"  class="i" width="80px" height="80px"></a>
+            <img src="R.png" class="im" width="80px" height="80px"></a>
+            <img src="A.png" class="i" height="80px" width="80px"></a>
+            <img src="B.png" class="im" height="80px" width="80px"></a>
+            <img src="b.png" class="i" height="80px" width="80px"></a>
+            <img src="L.png" class="im" height="80px" width="80px"></a>
+            <img src="E.png" class="i" height="80px" width="80px"></a>
+
+        </div> -->
+                <!-- <div class=><button  onclick="toggleShape()">Try It</button></div> -->
+                <!-- <div><input type="checkbox" id="backfaces" onclick="toggleBackfaces()" checked><label for="backfaces">Backfaces -->
+                        <!-- visible</label></div> -->
+                </div>
+                <br><br>
+                <div id="contain">
+                    <div id="stage">
+                        <div id="shape" class="cube backfaces" onclick="toggleShape()">
+
+                            <div class="plane one"><img id="i"   src="../assets/scrabblePieces/S.png" class="i" width="200px" height="200px"></a></div>
+                            <div class="plane two"><img id="i"   src="../assets/scrabblePieces/C.png" class="i" width="200px" height="200px"></a></div>
+                            <div class="plane three"><img id="i" src="../assets/scrabblePieces/R.png" class="i" width="200px" height="200px"></div>
+                            <div class="plane four"><img id="i"  src="../assets/scrabblePieces/A.png" class="i" width="200px" height="200px"></div>
+                            <div class="plane five"><img id="i"  src="../assets/scrabblePieces/B.png" class="i" width="200px" height="200px"></div>
+                            <div class="plane six"><img id="i"   src="../assets/scrabblePieces/B.png" class="i" width="200px" height="200px"></div>
+                            <div class="plane seven"><img id="i" src="../assets/scrabblePieces/L.png" class="i" width="200px" height="200px"></div>
+                            <div class="plane eight"><img id="i" src="../assets/scrabblePieces/E.png" class="i" width="200px" height="200px"></div>
+                                <!-- <div class="plane one i">S</a></div>
+                                <div class="plane two i" >C</a></div>
+                                <div class="plane three i" >R</div>
+                                <div class="plane four i">A</div>
+                                <div class="plane five i">B</div>
+                                <div class="plane six i" >B</div>
+                                <div class="plane seven i" >L</div>
+                                <div class="plane eight i">E</div> -->
+                            <!-- <div class="plane nine i">G</div>
+                            <div class="plane ten i">A</div>
+                            <div class="plane eleven i">M</div>
+                            <div class="plane twelve i">E</div> -->
+                        </div>
+                    </div>
+                </div>
+
+        </div><br><br><br><br><br><br>
+            <!-- <div id="btn"><button class="btn btn-dark" onclick="toggleShape()">Just Press It</button></div> -->
+            <!-- <div><input type="checkbox" id="backfaces" onclick="toggleBackfaces()" checked><label for="backfaces">Backfaces
+                    visible</label></div> -->
+            </div>
+
+
+        <br>
+
+    </div>
+    <div class="row"  id="col">
+        <div id="about"  class="col-md-6">
+            <h1 class="display-4">About The Game</h1>
+            <img src="https://images.unsplash.com/photo-1498435999018-6803de1f1c1f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60" width="200px" height="150px"><br><br>
+            <a href="../game/scrabbleBoard.html"><button id="btn2" class="btn">Wanna Play?</button></a>
+            <p>Scrabble is a word game in which two to four players score points by placing tiles, each bearing a single letter, onto a
+            game board divided into a 15×15 grid of squares. The tiles must form words that, in crossword fashion, read left to
+            right in rows or downward in columns, and be included in a standard dictionary or lexicon.The game is played by two to four players on a square game board imprinted with a 15×15 grid of cells (individually
+            known as "squares"), each of which accommodates a single letter tile.</p>
+        </div>
+        <div  id="how" class="col-md-6">
+            <h1 class="display-4"><center>How to Play</center></h1>
+            The first word formed must consist of at least two letters that form a word reading left-to-right or top-to-bottom, and
+            touch the center square (H8, marked with a star). On every turn, the player has the option to:<br><br>
+            <ul>
+               <style>
+                li{
+                    text-align: left;}</style><li > Pass their turn, scoring nothing.</li>
+            <li>Exchange 1-7 tiles, scoring nothing. The proper way to exchange tiles is to place the exchanged tiles face down, draw
+            replacement tiles, and put the exchanged tiles into the bag. You can only exchange if there are at least 7 tiles in the
+            bag.</li>
+
+            <li>Make a play by adding at least one new tile to the board, record the score for the play, and add to their cumulative
+            score.</li>
+            <li>Extend a previously played word; e.g. if PARK is played, (PARK)S, (PARK)ING, RE(PARK) and RE(PARK)ING are all acceptable
+            plays.</li>
+            <li>"Hook" a word by adding one letter to a previously played word, and playing perpendicular (e.g. if PARK is played,
+            playing ZEALOTS/S(PARK) is valid).</li>
+            <li>Playing parallel to a previously-played word. For example, playing ILEA under PARK, forming PI, AL, RE, and KA.</li>
+
+           </ul>
+        </div>
+    <div id="log" class="col-md-12">
+        <h1 class="display-3"><center>Login</center></h1><br>
+            <div class="form-row">
+                <div class="col-4"></div>
+                <div class="form-group col-md-4">
+                    <label for="inputEmail4">Email</label>
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                </div>
+                <div class="w-100 bg-dark"></div>
+                <div class="col-4"></div>
+                <div class="form-group col-md-4">
+                    <br><br>
+                    <label for="inputPassword4">Password</label>
+                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                </div>
+            </div>
+          <br>
+              <button id="btn1" onclick="sendDataToPHP()" class="btn btn-dark">Log in</button>
+              <div></div>
+              <div></div><br>
+                    <a href="../signUp/sign.html" id="sign">Not registered?</a>
+        </div>
+    </body>
+</html>
